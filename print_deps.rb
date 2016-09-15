@@ -76,13 +76,17 @@ end
 
 def print_yaml(output_file, packages)
   result_map = {}
-  result_map["dependencies"] = compute_dependencies(packages)
 
+  max_layer = packages.values.max_by { |p| p.layer }.layer
   result_map["layers"] = {}
+  (0..max_layer).each { |l| result_map["layers"][l] = [] }
+
   packages.each do |name, pkg|
-    result_map["layers"][pkg.layer] ||= []
     result_map["layers"][pkg.layer] << name
   end
+
+  result_map["dependencies"] = compute_dependencies(packages)
+  result_map["dependencies"].each_pair { |k,v| v.map! { |d| "#{d}[#{packages[d].layer}]" } }
 
   File.write(output_file, result_map.to_yaml)
 end
