@@ -62,8 +62,14 @@ def compute_time(packages, project, target, arch)
     cache_dir = "/tmp/rpm_deps/#{pkg.name}"
     Cheetah.run "mkdir", cache_dir unless File.exist?(cache_dir)
     Dir.chdir(cache_dir) do
-      Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics" unless File.exist? "#{cache_dir}/binaries/_statistics"
-      next unless File.exist? "#{cache_dir}/binaries/_statistics"
+      if !File.exist?("#{cache_dir}/binaries/_statistics") && !File.exist?("#{cache_dir}/no_build")
+        Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics" unless File.exist? "#{cache_dir}/binaries/_statistics"
+      end
+      if !File.exist? "#{cache_dir}/binaries/_statistics"
+        Cheetah.run "touch", "#{cache_dir}/no_build"
+        next
+      end
+
       doc = REXML::Document.new File.read("#{cache_dir}/binaries/_statistics")
       pkg.time = doc.root.elements["times/total/time"].text.to_i
     end
