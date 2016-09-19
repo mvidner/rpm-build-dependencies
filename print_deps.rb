@@ -56,14 +56,16 @@ def compute_layers(packages)
 end
 
 def compute_time(packages, project, target, arch)
-  Dir.chdir("/tmp") do
-    packages.values.each do |pkg|
-      puts "Obtaining build time for #{pkg.name}"
-      Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics"
-      next unless File.exist? "/tmp/binaries/_statistics"
-      doc = REXML::Document.new File.read("/tmp/binaries/_statistics")
+  Cheetah.run "mkdir", "/tmp/rpm_deps" unless File.exist?("/tmp/rpm_deps")
+  packages.values.each do |pkg|
+    puts "Obtaining build time for #{pkg.name}"
+    cache_dir = "/tmp/rpm_deps/#{pkg.name}"
+    Cheetah.run "mkdir", cache_dir unless File.exist?(cache_dir)
+    Dir.chdir(cache_dir) do
+      Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics" unless File.exist? "#{cache_dir}/binaries/_statistics"
+      next unless File.exist? "#{cache_dir}/binaries/_statistics"
+      doc = REXML::Document.new File.read("#{cache_dir}/binaries/_statistics")
       pkg.time = doc.root.elements["times/total/time"].text.to_i
-      Cheetah.run "rm", "-rf", "binaries"
     end
   end
 end
