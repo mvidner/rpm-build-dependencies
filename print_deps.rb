@@ -1,67 +1,48 @@
 require "yaml"
+require "cheetah"
+require "pp"
+require "rexml/document"
 
 class Package
-  attr_accessor :layer, :name, :build_deps, :runtime_deps
+  attr_accessor :layer, :name, :depends, :time, :total_time
 
-  def initialize(name)
+  def initialize(name, depends)
     @name = name
     @layer = -1
-    @build_deps = nil
-    @runtime_deps = nil
-  end
-
-  def read_spec(file)
-    # TODO: subpackages
-    lines = IO.readlines(file)
-
-    @build_deps = process_dep(lines, /^\s*BuildRequires:\s*(.*)$/)
-    @runtime_deps = process_dep(lines, /^\s*Requires:\s*(.*)$/)
-  end
-
-  private
-
-  def process_dep(lines, pattern)
-    deps_lines = lines.grep(/^\s*BuildRequires:/)
-    deps_lines.each_with_object([]) do |line, res|
-      deps = line[/^\s*BuildRequires:\s*(.*)$/, 1].split
-      # filter out version restriction like ">=" or "0.5.6"
-      deps.delete_if { |d| d.match(/^[<=>!0-9]/) }
-
-      res.concat(deps)
-    end
+    @depends = depends
+    @time = -1
+    @total_time = 0
   end
 end
 
-def process_files(files, packages)
-  files.each do |file|
-    # TODO: subpackages
-    pkg_name = File.basename(file, ".spec")
-    packages[pkg_name] = Package.new(pkg_name)
-    packages[pkg_name].read_spec(file)
-  end
-end
-
-def compute_dependencies(packages)
-  dependencies = {}
-  packages.each_pair do |name, pkg|
-    # add to dependencies all known build requires + its runtime deps
-    dependencies[name] = pkg.build_deps.each_with_object([]) do |dep, res|
-      next unless packages[dep]
-      res << dep
-      runtime_deps = packages[dep].runtime_deps
-      res.concat(runtime_deps.select{ |d| packages[d] })
+def get_packages(project, build_target, arch)
+  output = Cheetah.run "osc", "dependson", project, build_target, arch, stdout: :capture
+  res = {}
+  current_pkg = nil
+  current_deps = []
+  output.lines.each do |line|
+    case line
+    when /^(\S+) :$/
+      res[current_pkg] = Package.new(current_pkg, current_deps) if current_pkg
+      current_pkg = $1
+      current_deps = []
+    when /^\s+(\S+)$/
+      current_deps << $1
+    else
+      raise "unknown line '#{line}'"
     end
   end
 
-  dependencies
+  res[current_pkg] = Package.new(current_pkg, current_deps) if current_pkg
+
+  res
 end
 
 def compute_layers(packages)
-  dependencies = compute_dependencies(packages)
+  dependencies = Hash[packages.values.map{ |p| [p.name, p.depends]}]
   current_layer = 0
   while(!dependencies.empty?) do
     pkgs_for_layer = dependencies.select{ |k,v| v.empty? }.keys
-    raise "cycle detected" if pkgs_for_layer.empty?
 
     pkgs_for_layer.each do |pkg|
       packages[pkg].layer = current_layer
@@ -74,8 +55,42 @@ def compute_layers(packages)
   end
 end
 
+def compute_time(packages, project, target, arch)
+  Dir.chdir("/tmp") do
+    packages.values.each do |pkg|
+      puts "Obtaining build time for #{pkg.name}"
+      Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics"
+      next unless File.exist? "/tmp/binaries/_statistics"
+      doc = REXML::Document.new File.read("/tmp/binaries/_statistics")
+      pkg.time = doc.root.elements["times/total/time"].text.to_i
+      Cheetah.run "rm", "-rf", "binaries"
+    end
+  end
+end
+
+def compute_min_time(packages)
+  pkgs_by_layer = packages.values.sort_by{ |p| p.layer }
+  pkgs_by_layer.each do |pkg|
+    slowest_dep = pkg.depends.max_by { |p| packages[p].time }
+    dep_time = slowest_dep ? packages[slowest_dep].time : 0
+    pkg.total_time = dep_time + pkg.time
+  end
+end
+
 def print_yaml(output_file, packages)
   result_map = {}
+
+  result_map["critical path"] = {}
+  critical_pkg = packages.values.max_by { |p| p.total_time }
+  result_map["critical path"]["total time"] = critical_pkg.total_time
+  result_deps = []
+  to_process = critical_pkg
+  while(to_process) do
+    result_deps << "#{to_process.name} [#{to_process.time}s]"
+    next_dep = to_process.depends.max_by { |p| packages[p].total_time }
+    to_process = next_dep ? packages[next_dep] : nil
+  end
+  result_map["critical path"]["path"] = result_deps
 
   max_layer = packages.values.max_by { |p| p.layer }.layer
   result_map["layers"] = {}
@@ -85,17 +100,18 @@ def print_yaml(output_file, packages)
     result_map["layers"][pkg.layer] << name
   end
 
-  result_map["dependencies"] = compute_dependencies(packages)
-  result_map["dependencies"].each_pair { |k,v| v.map! { |d| "#{d}[#{packages[d].layer}]" } }
+  result_map["dependencies"] = Hash[packages.values.map { |p| ["#{p.name} ~ #{p.time}s", p.depends.map { |d| "#{d} [#{packages[d].layer}]" }]}]
 
   File.write(output_file, result_map.to_yaml)
 end
 
-glob, output_file = ARGV
+project, target, arch, output_file = ARGV
 
-files = Dir.glob(glob)
-packages = {}
+raise "Usage: $0 <obs_project> <obs_build_target> <arch> <output_file>" unless output_file
 
-process_files(files, packages)
+packages = get_packages(project, target, arch)
+
 compute_layers(packages)
+compute_time(packages, project, target, arch)
+compute_min_time(packages)
 print_yaml(output_file, packages)
