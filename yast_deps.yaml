@@ -1,13 +1,21 @@
 ---
 critical path:
-  total time: 914
+  total time: 2522
   path:
+  - yast2-schema [195s]
+  - yast2-mail [209s]
   - yast2-auth-server [261s]
+  - yast2-users [136s]
+  - yast2-ldap [101s]
+  - yast2-network [81s]
+  - yast2-packager [75s]
   - yast2-storage [209s]
+  - yast2 [131s]
   - yast2-perl-bindings [236s]
   - yast2-ruby-bindings [181s]
-  - libyui-ncurses [412s]
-  - libyui [263s]
+  - yast2-ycp-ui-bindings [107s]
+  - yast2-core [467s]
+  - yast2-devtools [133s]
 layers:
   0:
   - SUSEConnect
