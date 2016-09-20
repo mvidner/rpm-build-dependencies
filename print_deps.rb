@@ -2,6 +2,8 @@ require "yaml"
 require "cheetah"
 require "pp"
 require "rexml/document"
+require "fileutils"
+require "tmpdir"
 
 class Package
   attr_accessor :layer, :name, :depends, :time, :total_time
@@ -15,8 +17,37 @@ class Package
   end
 end
 
+def cache_dir
+  name = File.expand_path("../cache", __FILE__)
+  FileUtils.mkdir_p name unless File.directory? name
+  name
+end
+
+# A persistent cache for an expensive operation that returns a string.
+# @param filename [String] base name of file to cache the result.
+#    Will be kept in {#cache_dir}
+# @param block The expensive operation
+def cache(filename, &block)
+  fullname = "#{cache_dir}/#{filename}"
+  if File.exist?(fullname)
+    File.read(fullname)
+  else
+    result = block.call
+    File.write(fullname, result)
+    result
+  end
+end
+
+def osc_dependson(project, build_target, arch)
+  cache("#{project}@#{build_target}@#{arch}.dependson") do
+    puts "Obtaining dependson for #{project}"
+    Cheetah.run "osc", "dependson", project, build_target, arch,
+                stdout: :capture
+  end
+end
+
 def get_packages(project, build_target, arch)
-  output = Cheetah.run "osc", "dependson", project, build_target, arch, stdout: :capture
+  output = osc_dependson(project, build_target, arch)
   res = {}
   current_pkg = nil
   current_deps = []
@@ -55,24 +86,36 @@ def compute_layers(packages)
   end
 end
 
-def compute_time(packages, project, target, arch)
-  Cheetah.run "mkdir", "/tmp/rpm_deps" unless File.exist?("/tmp/rpm_deps")
-  packages.values.each do |pkg|
-    puts "Obtaining build time for #{pkg.name}"
-    cache_dir = "/tmp/rpm_deps/#{pkg.name}"
-    Cheetah.run "mkdir", cache_dir unless File.exist?(cache_dir)
-    Dir.chdir(cache_dir) do
-      if !File.exist?("#{cache_dir}/binaries/_statistics") && !File.exist?("#{cache_dir}/no_build")
-        Cheetah.run "osc", "-v", "getbinaries", project, pkg.name, target, arch, "_statistics" unless File.exist? "#{cache_dir}/binaries/_statistics"
-      end
-      if !File.exist? "#{cache_dir}/binaries/_statistics"
-        Cheetah.run "touch", "#{cache_dir}/no_build"
-        next
-      end
+# Ask the OBS for the build statistics of a package
+# @return [String] XML, or an empty string if there is no build
+def statistics(project, package_name, target, arch)
+  cache("#{project}@#{package_name}@#{target}@#{arch}.statistics.xml") do
+    puts "Obtaining build time for #{package_name}"
 
-      doc = REXML::Document.new File.read("#{cache_dir}/binaries/_statistics")
-      pkg.time = doc.root.elements["times/total/time"].text.to_i
+    Dir.mktmpdir do |dir|
+      Dir.chdir(dir) do
+        # return code 0 even if no files are fetched
+        Cheetah.run "osc", "-v", "getbinaries",
+                    project, package_name, target, arch, "_statistics"
+
+        if File.exist? "binaries/_statistics"
+          ret = File.read "binaries/_statistics"
+          FileUtils.rm_rf "binaries"
+          ret
+        else
+          ""
+        end
+      end
     end
+  end
+end
+
+def compute_time(packages, project, target, arch)
+  packages.values.each do |pkg|
+    xml = statistics(project, pkg.name, target, arch)
+    next if xml.empty?
+    doc = REXML::Document.new(xml)
+    pkg.time = doc.root.elements["times/total/time"].text.to_i
   end
 end
 
