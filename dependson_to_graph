@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+osc_dependson = File.read(ARGV.first)
+
+res = {}
+current_pkg = nil
+current_deps = []
+
+osc_dependson.lines.each do |line|
+  case line
+  when /^(\S+) :$/
+    res[current_pkg] = current_deps if current_pkg
+    current_pkg = $1
+    current_deps = []
+  when /^\s+(\S+)$/
+    current_deps << $1
+  else
+    raise "unknown line '#{line}'"
+  end
+end
+
+res[current_pkg] = current_deps if current_pkg
+
+# From https://github.com/mvidner/code-explorer/blob/68bacb7be22e5a20795bec21d581e982d9f6a145/lib/code_explorer/dot.rb
+# @param graph [Hash{String => Array<String>}] vertex -> reachable vertices
+# @param hrefs [Hash{String => String}]        vertex -> href
+def dot_from_hash(graph, hrefs = {})
+  dot = ""
+  dot << "digraph g {\n"
+  dot << "rankdir=LR;\n"
+  graph.keys.sort.each do |vertex|
+    href = hrefs[vertex]
+    href = "href=\"#{href}\" " if href
+
+    dot << "\"#{vertex}\"[#{href}];\n"
+    destinations = graph[vertex].sort
+    destinations.each do |d|
+      dot << "\"#{vertex}\" -> \"#{d}\";\n"
+    end
+  end
+  dot << "}\n"
+  dot
+end
+
+puts dot_from_hash(res)
