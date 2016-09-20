@@ -79,8 +79,8 @@ end
 def compute_min_time(packages)
   pkgs_by_layer = packages.values.sort_by{ |p| p.layer }
   pkgs_by_layer.each do |pkg|
-    slowest_dep = pkg.depends.max_by { |p| packages[p].time }
-    dep_time = slowest_dep ? packages[slowest_dep].time : 0
+    slowest_dep = pkg.depends.max_by { |p| packages[p].total_time }
+    dep_time = slowest_dep ? packages[slowest_dep].total_time : 0
     pkg.total_time = dep_time + pkg.time
   end
 end
