@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require "rexml/document"
+require "yaml"
+
 osc_dependson = File.read(ARGV.first)
 
 res = {}
@@ -19,20 +22,43 @@ osc_dependson.lines.each do |line|
   end
 end
 
+# @return [Integer]
+def build_time(statistics_xml_filename)
+  xml = File.read(statistics_xml_filename)
+  return 0 if xml.empty?
+  doc = REXML::Document.new(xml)
+  doc.root.elements["times/total/time"].text.to_i
+end
+
+# @return [Hash{String => Integer}] package name to build time (in s)
+def build_times
+  pairs = Dir.glob("cache/*.statistics.xml").map do |fn|
+    # names are like cache/prj@pkg@target@arch.statistics.xml
+    name = fn.split("@")[1]
+    time = build_time(fn)
+    [name, time]
+  end
+  Hash[pairs]
+end
+
 res[current_pkg] = current_deps if current_pkg
 
 # From https://github.com/mvidner/code-explorer/blob/68bacb7be22e5a20795bec21d581e982d9f6a145/lib/code_explorer/dot.rb
 # @param graph [Hash{String => Array<String>}] vertex -> reachable vertices
+# @param widths [Hash{String => Integer}]      vertex -> width
 # @param hrefs [Hash{String => String}]        vertex -> href
-def dot_from_hash(graph, hrefs = {})
+def dot_from_hash(graph, widths = {}, hrefs = {})
   dot = ""
   dot << "digraph g {\n"
   dot << "rankdir=LR;\n"
   graph.keys.sort.each do |vertex|
     href = hrefs[vertex]
-    href = "href=\"#{href}\" " if href
+    href = "href=\"#{href}\";" if href
 
-    dot << "\"#{vertex}\"[#{href}];\n"
+    width = widths[vertex]
+    width = "width=#{width/10.0};fixedsize=true;" if width
+
+    dot << "\"#{vertex}\"[#{width}#{href}];\n"
     destinations = graph[vertex].sort
     destinations.each do |d|
       dot << "\"#{vertex}\" -> \"#{d}\";\n"
@@ -42,4 +68,4 @@ def dot_from_hash(graph, hrefs = {})
   dot
 end
 
-puts dot_from_hash(res)
+puts dot_from_hash(res, build_times)
