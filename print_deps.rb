@@ -41,34 +41,27 @@ def cache(filename, &block)
 end
 
 def osc_dependson(project, build_target, arch)
-  cache("#{project}@#{build_target}@#{arch}.dependson") do
+  txt = cache("#{project}@#{build_target}@#{arch}.dependson") do
     puts "Obtaining dependson for #{project}"
     Cheetah.run "osc", "dependson", project, build_target, arch,
                 stdout: :capture
   end
+  cache("#{project}@#{build_target}@#{arch}.dependson.yaml") do
+    # convert to YAML!
+    txt.gsub(" :", ":")               # hash keys
+      .gsub(/^   /, "- ")             # list items
+      .gsub(/:\n([^-])/, ": []\n\\1") # empty lists
+  end
 end
 
 def get_packages(project, build_target, arch)
-  output = osc_dependson(project, build_target, arch)
-  res = {}
-  current_pkg = nil
-  current_deps = []
-  output.lines.each do |line|
-    case line
-    when /^(\S+) :$/
-      res[current_pkg] = Package.new(current_pkg, current_deps) if current_pkg
-      current_pkg = $1
-      current_deps = []
-    when /^\s+(\S+)$/
-      current_deps << $1
-    else
-      raise "unknown line '#{line}'"
-    end
+  yaml = osc_dependson(project, build_target, arch)
+  deps = YAML.load(yaml)
+
+  pairs = deps.map do |current_pkg, current_deps|
+    [current_pkg, Package.new(current_pkg, current_deps)]
   end
-
-  res[current_pkg] = Package.new(current_pkg, current_deps) if current_pkg
-
-  res
+  Hash[pairs]
 end
 
 def compute_layers(packages)
