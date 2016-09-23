@@ -1,12 +1,12 @@
 ---
 critical path:
-  total time: 1839
+  total time: 1780
   path:
   - yast2-schema [141s]
-  - yast2-auth-server [261s]
-  - yast2-users [113s]
-  - yast2-security [187s]
-  - yast2-pam [110s]
+  - autoyast2 [168s]
+  - yast2-update [143s]
+  - yast2-packager [75s]
+  - yast2-storage [226s]
   - yast2-perl-bindings [236s]
   - yast2-ruby-bindings [181s]
   - yast2-ycp-ui-bindings [107s]
@@ -90,6 +90,7 @@ layers:
   - yast2-core
   - yast2-firstboot
   - yast2-installation-control
+  - yast2-pam
   - yast2-testsuite
   - yast2-theme
   - yast2-theme-SLE
@@ -146,10 +147,12 @@ layers:
   - yast2-mail
   - yast2-nfs-client
   - yast2-nfs-server
-  - yast2-pam
+  - yast2-nis-client
   - yast2-printer
   - yast2-proxy
+  - yast2-samba-client
   - yast2-scanner
+  - yast2-security
   - yast2-services-manager
   - yast2-slp
   - yast2-slp-server
@@ -168,34 +171,31 @@ layers:
   - yast2-bootloader
   - yast2-multipath
   - yast2-network
-  - yast2-nis-client
   - yast2-ntp-client
   - yast2-packager
   - yast2-rear
-  - yast2-samba-client
-  - yast2-security
+  - yast2-users
   7:
   - yast2-auth-client
+  - yast2-auth-server
   - yast2-dns-server
   - yast2-http-server
+  - yast2-inetd
   - yast2-kdump
   - yast2-metapackage-handler
   - yast2-nis-server
   - yast2-online-update
   - yast2-online-update-configuration
   - yast2-reipl
+  - yast2-samba-server
+  - yast2-sudo
   - yast2-update
-  - yast2-users
   - yast2-vm
   8:
   - autoyast2
-  - yast2-auth-server
   - yast2-dhcp-server
-  - yast2-inetd
   - yast2-migration
   - yast2-registration
-  - yast2-samba-server
-  - yast2-sudo
   9:
   - yast2-product-creator
   - yast2-schema
@@ -238,7 +238,7 @@ dependencies:
   - libxkbcommon-sle12 [0]
   libqt5-qtx11extras-sle12 ~ -1s:
   - libxkbcommon-sle12 [0]
-  libstorage ~ 653s: []
+  libstorage ~ 539s: []
   libxkbcommon-sle12 ~ -1s: []
   libyui ~ 152s: []
   libyui-bindings ~ 169s:
@@ -451,7 +451,7 @@ dependencies:
   - yast2-hardware-detection [2]
   - yast2-network [6]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
@@ -474,15 +474,15 @@ dependencies:
   - yast2-ldap [5]
   - yast2-network [6]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-security [6]
+  - yast2-security [5]
   - yast2-storage [5]
   - yast2-transfer [5]
-  - yast2-users [7]
+  - yast2-users [6]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
   yast2-boot-server ~ 72s:
@@ -547,7 +547,7 @@ dependencies:
   yast2-control-center ~ 143s:
   - libxkbcommon-sle12 [0]
   - yast2-devtools [0]
-  yast2-control-center-gnome ~ 288s:
+  yast2-control-center-gnome ~ 102s:
   - libxkbcommon-sle12 [0]
   - yast2-devtools [0]
   yast2-core ~ 426s:
@@ -794,16 +794,16 @@ dependencies:
   - yast2-ldap [5]
   - yast2-network [6]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-security [6]
+  - yast2-security [5]
   - yast2-storage [5]
   - yast2-testsuite [1]
   - yast2-transfer [5]
-  - yast2-users [7]
+  - yast2-users [6]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
   yast2-installation ~ 211s:
@@ -1093,7 +1093,7 @@ dependencies:
   - yast2-core [1]
   - yast2-devtools [0]
   - yast2-hardware-detection [2]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-ruby-bindings [3]
@@ -1110,9 +1110,9 @@ dependencies:
   - yast2-devtools [0]
   - yast2-hardware-detection [2]
   - yast2-network [6]
-  - yast2-nis-client [6]
+  - yast2-nis-client [5]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
@@ -1202,20 +1202,10 @@ dependencies:
   - yast2-theme [1]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
-  yast2-pam ~ 110s:
-  - libyui [0]
-  - libzypp [0]
-  - rubygem-cfa [0]
+  yast2-pam ~ 106s:
   - rubygem-packaging_rake_tasks [0]
   - rubygem-yast-rake [0]
-  - yast2 [4]
-  - yast2-core [1]
   - yast2-devtools [0]
-  - yast2-hardware-detection [2]
-  - yast2-perl-bindings [4]
-  - yast2-pkg-bindings [2]
-  - yast2-ruby-bindings [3]
-  - yast2-ycp-ui-bindings [2]
   yast2-perl-bindings ~ 236s:
   - libyui [0]
   - yast2-core [1]
@@ -1260,12 +1250,12 @@ dependencies:
   - yast2-hardware-detection [2]
   - yast2-installation [5]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-security [6]
+  - yast2-security [5]
   - yast2-services-manager [5]
   - yast2-slp [5]
   - yast2-storage [5]
@@ -1385,7 +1375,7 @@ dependencies:
   - yast2-core [1]
   - yast2-devtools [0]
   - yast2-hardware-detection [2]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-ruby-bindings [3]
@@ -1404,17 +1394,17 @@ dependencies:
   - yast2-ldap [5]
   - yast2-network [6]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-samba-client [6]
-  - yast2-security [6]
+  - yast2-samba-client [5]
+  - yast2-security [5]
   - yast2-storage [5]
   - yast2-testsuite [1]
   - yast2-transfer [5]
-  - yast2-users [7]
+  - yast2-users [6]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
   yast2-scanner ~ 155s:
@@ -1441,7 +1431,7 @@ dependencies:
   - yast2-add-on [5]
   - yast2-audit-laf [5]
   - yast2-auth-client [7]
-  - yast2-auth-server [8]
+  - yast2-auth-server [7]
   - yast2-bootloader [6]
   - yast2-ca-management [5]
   - yast2-core [1]
@@ -1454,7 +1444,7 @@ dependencies:
   - yast2-ftp-server [5]
   - yast2-hardware-detection [2]
   - yast2-http-server [7]
-  - yast2-inetd [8]
+  - yast2-inetd [7]
   - yast2-installation [5]
   - yast2-iscsi-client [5]
   - yast2-kdump [7]
@@ -1463,19 +1453,19 @@ dependencies:
   - yast2-network [6]
   - yast2-nfs-client [5]
   - yast2-nfs-server [5]
-  - yast2-nis-client [6]
+  - yast2-nis-client [5]
   - yast2-nis-server [7]
   - yast2-ntp-client [6]
   - yast2-online-update-configuration [7]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-printer [5]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-samba-client [6]
-  - yast2-samba-server [8]
-  - yast2-security [6]
+  - yast2-samba-client [5]
+  - yast2-samba-server [7]
+  - yast2-security [5]
   - yast2-services-manager [5]
   - yast2-slp [5]
   - yast2-sound [5]
@@ -1485,7 +1475,7 @@ dependencies:
   - yast2-testsuite [1]
   - yast2-transfer [5]
   - yast2-update [7]
-  - yast2-users [7]
+  - yast2-users [6]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
   yast2-security ~ 187s:
@@ -1502,7 +1492,7 @@ dependencies:
   - yast2-core [1]
   - yast2-devtools [0]
   - yast2-hardware-detection [2]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-ruby-bindings [3]
@@ -1596,7 +1586,7 @@ dependencies:
   - yast2-ruby-bindings [3]
   - yast2-testsuite [1]
   - yast2-ycp-ui-bindings [2]
-  yast2-storage ~ 209s:
+  yast2-storage ~ 226s:
   - libstorage [0]
   - libyui [0]
   - libzypp [0]
@@ -1629,15 +1619,15 @@ dependencies:
   - yast2-ldap [5]
   - yast2-network [6]
   - yast2-packager [6]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-proxy [5]
   - yast2-ruby-bindings [3]
-  - yast2-security [6]
+  - yast2-security [5]
   - yast2-storage [5]
   - yast2-transfer [5]
-  - yast2-users [7]
+  - yast2-users [6]
   - yast2-xml [2]
   - yast2-ycp-ui-bindings [2]
   yast2-support ~ 99s:
@@ -1750,11 +1740,11 @@ dependencies:
   - yast2-core [1]
   - yast2-devtools [0]
   - yast2-hardware-detection [2]
-  - yast2-pam [5]
+  - yast2-pam [1]
   - yast2-perl-bindings [4]
   - yast2-pkg-bindings [2]
   - yast2-ruby-bindings [3]
-  - yast2-security [6]
+  - yast2-security [5]
   - yast2-testsuite [1]
   - yast2-ycp-ui-bindings [2]
   yast2-vm ~ 225s:
