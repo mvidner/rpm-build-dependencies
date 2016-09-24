@@ -1,24 +1,8 @@
 require "yaml"
-require "cheetah"
 require "pp"
-require "rexml/document"
-require "fileutils"
-require "tmpdir"
 
-# A (project, build target, architecture) triple
-# Eg. (YaST:Head, openSUSE_Factory, x86_64)
-class Project3
-  # @return [String]
-  attr_accessor :project
-  # @return [String]
-  attr_accessor :target
-  # @return [String]
-  attr_accessor :arch
-
-  def to_s
-    "#{project}@#{target}@#{arch}"
-  end
-end
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+require "obs"
 
 class Package
   attr_accessor :layer, :name, :depends, :time, :total_time
@@ -32,49 +16,9 @@ class Package
   end
 end
 
-$cache_dir = nil
-def cache_dir
-  return $cache_dir if $cache_dir
-  name = File.expand_path("../cache", __FILE__)
-  FileUtils.mkdir_p name unless File.directory? name
-  $cache_dir = name
-end
-
-# A persistent cache for an expensive operation that returns a string.
-# @param filename [String] base name of file to cache the result.
-#    Will be kept in {#cache_dir}
-# @param block The expensive operation
-def cache(filename, &block)
-  fullname = "#{cache_dir}/#{filename}"
-  if File.exist?(fullname)
-    File.read(fullname)
-  else
-    result = block.call
-    File.write(fullname, result)
-    result
-  end
-end
-
-# @param project3 [Project3]
-# @return [String] a dependency hash as a yaml string
-def osc_dependson(project3)
-  txt = cache("#{project3}.dependson") do
-    puts "Obtaining dependson for #{project3}"
-    Cheetah.run "osc", "dependson",
-                project3.project, project3.target, project3.arch,
-                stdout: :capture
-  end
-  cache("#{project3}.dependson.yaml") do
-    # convert to YAML!
-    txt.gsub(" :", ":")               # hash keys
-      .gsub(/^   /, "- ")             # list items
-      .gsub(/:\n([^-])/, ": []\n\\1") # empty lists
-  end
-end
-
+# @return [Hash{String => Package}]
 def get_packages(project3)
-  yaml = osc_dependson(project3)
-  deps = YAML.load(yaml)
+  deps = project3.dependson
 
   pairs = deps.map do |current_pkg, current_deps|
     [current_pkg, Package.new(current_pkg, current_deps)]
@@ -98,43 +42,9 @@ def compute_layers(packages)
     current_layer += 1
   end
 end
-
-# Ask the OBS for the build statistics of a package
-# @return [String] XML, or an empty string if there is no build
-def osc_statistics(project3, package_name)
-  cache("#{package_name}@#{project3}.statistics.xml") do
-    puts "Obtaining build time for #{package_name}"
-
-    project, target, arch = project3.project, project3.target, project3.arch
-    Dir.mktmpdir do |dir|
-      Dir.chdir(dir) do
-        # return code 0 even if no files are fetched
-        Cheetah.run "osc", "-v", "getbinaries",
-                    project, package_name, target, arch, "_statistics"
-
-        if File.exist? "binaries/_statistics"
-          ret = File.read "binaries/_statistics"
-          FileUtils.rm_rf "binaries"
-          ret
-        else
-          ""
-        end
-      end
-    end
-  end
-end
-
-# @return [Integer,nil]
-def osc_total_build_time(project3, package_name)
-  xml = osc_statistics(project3, package_name)
-  return nil if xml.empty?
-  doc = REXML::Document.new(xml)
-  doc.root.elements["times/total/time"].text.to_i
-end
-
 def compute_time(packages, project3)
   packages.values.each do |pkg|
-    time = osc_total_build_time(project3, pkg.name)
+    time = project3.total_build_time(pkg.name)
     next if time.nil?
     pkg.time = time
   end
@@ -177,8 +87,8 @@ def print_yaml(output_file, packages)
   File.write(output_file, result_map.to_yaml)
 end
 
-project3 = Project3.new
-project3.project, project3.target, project3.arch, output_file = ARGV
+project3 = OBS::Project3.new(ARGV[0], ARGV[1], ARGV[2])
+output_file = ARGV[3]
 
 raise "Usage: $0 <obs_project> <obs_build_target> <arch> <output_file>" unless output_file
 
