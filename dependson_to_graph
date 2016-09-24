@@ -1,25 +1,7 @@
 #!/usr/bin/env ruby
 
-osc_dependson = File.read(ARGV.first)
-
-res = {}
-current_pkg = nil
-current_deps = []
-
-osc_dependson.lines.each do |line|
-  case line
-  when /^(\S+) :$/
-    res[current_pkg] = current_deps if current_pkg
-    current_pkg = $1
-    current_deps = []
-  when /^\s+(\S+)$/
-    current_deps << $1
-  else
-    raise "unknown line '#{line}'"
-  end
-end
-
-res[current_pkg] = current_deps if current_pkg
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+require "obs"
 
 # From https://github.com/mvidner/code-explorer/blob/68bacb7be22e5a20795bec21d581e982d9f6a145/lib/code_explorer/dot.rb
 # @param graph [Hash{String => Array<String>}] vertex -> reachable vertices
@@ -42,4 +24,6 @@ def dot_from_hash(graph, hrefs = {})
   dot
 end
 
-puts dot_from_hash(res)
+project3 = OBS::Project3.new(ARGV[0], ARGV[1], ARGV[2])
+deps = project3.dependson
+puts dot_from_hash(deps)
