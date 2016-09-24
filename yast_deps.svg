@@ -531,23 +531,23 @@
 </g>
 <!-- libqt5&#45;qtsvg&#45;sle12 -->
 <g id="node38" class="node"><title>libqt5&#45;qtsvg&#45;sle12</title>
-<ellipse fill="none" stroke="black" cx="2270.97" cy="-2681" rx="77.9862" ry="18"/>
+<ellipse fill="none" stroke="black" cx="2270.97" cy="-2681" rx="77.1866" ry="18"/>
 <text text-anchor="middle" x="2270.97" y="-2677.3" font-family="Times,serif" font-size="14.00">libqt5&#45;qtsvg&#45;sle12</text>
 </g>
 <!-- libqt5&#45;qtsvg&#45;sle12&#45;&gt;libxkbcommon&#45;sle12 -->
 <g id="edge65" class="edge"><title>libqt5&#45;qtsvg&#45;sle12&#45;&gt;libxkbcommon&#45;sle12</title>
-<path fill="none" stroke="black" d="M2333.09,-2670.07C2350.52,-2666.01 2369.31,-2660.72 2386.01,-2654 2418.64,-2640.89 2452.88,-2620.13 2477.1,-2604.1"/>
+<path fill="none" stroke="black" d="M2332.8,-2670.14C2350.31,-2666.07 2369.21,-2660.75 2386.01,-2654 2418.64,-2640.89 2452.88,-2620.13 2477.1,-2604.1"/>
 <polygon fill="black" stroke="black" points="2479.19,-2606.91 2485.54,-2598.43 2475.29,-2601.1 2479.19,-2606.91"/>
 </g>
 <!-- libqt5&#45;qtx11extras&#45;sle12 -->
 <g id="node39" class="node"><title>libqt5&#45;qtx11extras&#45;sle12</title>
-<ellipse fill="none" stroke="black" cx="2270.97" cy="-2627" rx="100.182" ry="18"/>
+<ellipse fill="none" stroke="black" cx="2270.97" cy="-2627" rx="99.3824" ry="18"/>
 <text text-anchor="middle" x="2270.97" y="-2623.3" font-family="Times,serif" font-size="14.00">libqt5&#45;qtx11extras&#45;sle12</text>
 </g>
 <!-- libqt5&#45;qtx11extras&#45;sle12&#45;&gt;libxkbcommon&#45;sle12 -->
 <g id="edge66" class="edge"><title>libqt5&#45;qtx11extras&#45;sle12&#45;&gt;libxkbcommon&#45;sle12</title>
-<path fill="none" stroke="black" d="M2339.88,-2613.88C2369.89,-2608.08 2405.24,-2601.25 2435.94,-2595.32"/>
-<polygon fill="black" stroke="black" points="2437,-2598.68 2446.15,-2593.35 2435.67,-2591.81 2437,-2598.68"/>
+<path fill="none" stroke="black" d="M2339.56,-2613.94C2369.71,-2608.12 2405.3,-2601.24 2436.15,-2595.28"/>
+<polygon fill="black" stroke="black" points="2436.83,-2598.71 2445.99,-2593.38 2435.5,-2591.84 2436.83,-2598.71"/>
 </g>
 <!-- libyui&#45;bindings -->
 <g id="node40" class="node"><title>libyui&#45;bindings</title>
@@ -616,13 +616,13 @@
 </g>
 <!-- libyui&#45;qt&#45;&gt;libqt5&#45;qtsvg&#45;sle12 -->
 <g id="edge75" class="edge"><title>libyui&#45;qt&#45;&gt;libqt5&#45;qtsvg&#45;sle12</title>
-<path fill="none" stroke="black" d="M2044.32,-2651.24C2083.4,-2656.39 2144.1,-2664.4 2192.71,-2670.81"/>
-<polygon fill="black" stroke="black" points="2192.51,-2674.31 2202.89,-2672.15 2193.43,-2667.37 2192.51,-2674.31"/>
+<path fill="none" stroke="black" d="M2044.32,-2651.24C2083.54,-2656.41 2144.52,-2664.45 2193.21,-2670.88"/>
+<polygon fill="black" stroke="black" points="2193.03,-2674.38 2203.4,-2672.22 2193.95,-2667.44 2193.03,-2674.38"/>
 </g>
 <!-- libyui&#45;qt&#45;&gt;libqt5&#45;qtx11extras&#45;sle12 -->
 <g id="edge76" class="edge"><title>libyui&#45;qt&#45;&gt;libqt5&#45;qtx11extras&#45;sle12</title>
-<path fill="none" stroke="black" d="M2045.48,-2643.07C2077.98,-2640.75 2124.91,-2637.39 2167.46,-2634.34"/>
-<polygon fill="black" stroke="black" points="2167.88,-2637.82 2177.6,-2633.61 2167.38,-2630.84 2167.88,-2637.82"/>
+<path fill="none" stroke="black" d="M2045.48,-2643.07C2078.12,-2640.74 2125.3,-2637.36 2167.99,-2634.3"/>
+<polygon fill="black" stroke="black" points="2168.44,-2637.78 2178.16,-2633.57 2167.94,-2630.8 2168.44,-2637.78"/>
 </g>
 <!-- libyui&#45;qt&#45;doc -->
 <g id="node46" class="node"><title>libyui&#45;qt&#45;doc</title>

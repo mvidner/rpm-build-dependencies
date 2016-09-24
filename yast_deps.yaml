@@ -306,7 +306,7 @@ dependencies:
   rubygem-parser ~ 184s: []
   rubygem-powerpack ~ 57s: []
   rubygem-rainbow ~ 74s: []
-  rubygem-raspell ~ 67s: []
+  rubygem-raspell ~ 122s: []
   rubygem-rest-client ~ 181s: []
   rubygem-rspec ~ -1s: []
   rubygem-rspec-core ~ -1s: []
@@ -1559,7 +1559,7 @@ dependencies:
   - yast2-pkg-bindings [2]
   - yast2-ruby-bindings [3]
   - yast2-ycp-ui-bindings [2]
-  yast2-sound ~ 163s:
+  yast2-sound ~ 104s:
   - libyui [0]
   - libzypp [0]
   - perl-Bootloader [0]
