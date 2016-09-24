@@ -5,6 +5,21 @@ require "rexml/document"
 require "fileutils"
 require "tmpdir"
 
+# A (project, build target, architecture) triple
+# Eg. (YaST:Head, openSUSE_Factory, x86_64)
+class Project3
+  # @return [String]
+  attr_accessor :project
+  # @return [String]
+  attr_accessor :target
+  # @return [String]
+  attr_accessor :arch
+
+  def to_s
+    "#{project}@#{target}@#{arch}"
+  end
+end
+
 class Package
   attr_accessor :layer, :name, :depends, :time, :total_time
 
@@ -40,13 +55,16 @@ def cache(filename, &block)
   end
 end
 
-def osc_dependson(project, build_target, arch)
-  txt = cache("#{project}@#{build_target}@#{arch}.dependson") do
-    puts "Obtaining dependson for #{project}"
-    Cheetah.run "osc", "dependson", project, build_target, arch,
+# @param project3 [Project3]
+# @return [String] a dependency hash as a yaml string
+def osc_dependson(project3)
+  txt = cache("#{project3}.dependson") do
+    puts "Obtaining dependson for #{project3}"
+    Cheetah.run "osc", "dependson",
+                project3.project, project3.target, project3.arch,
                 stdout: :capture
   end
-  cache("#{project}@#{build_target}@#{arch}.dependson.yaml") do
+  cache("#{project3}.dependson.yaml") do
     # convert to YAML!
     txt.gsub(" :", ":")               # hash keys
       .gsub(/^   /, "- ")             # list items
@@ -54,8 +72,8 @@ def osc_dependson(project, build_target, arch)
   end
 end
 
-def get_packages(project, build_target, arch)
-  yaml = osc_dependson(project, build_target, arch)
+def get_packages(project3)
+  yaml = osc_dependson(project3)
   deps = YAML.load(yaml)
 
   pairs = deps.map do |current_pkg, current_deps|
@@ -83,10 +101,11 @@ end
 
 # Ask the OBS for the build statistics of a package
 # @return [String] XML, or an empty string if there is no build
-def statistics(project, package_name, target, arch)
-  cache("#{project}@#{package_name}@#{target}@#{arch}.statistics.xml") do
+def osc_statistics(project3, package_name)
+  cache("#{package_name}@#{project3}.statistics.xml") do
     puts "Obtaining build time for #{package_name}"
 
+    project, target, arch = project3.project, project3.target, project3.arch
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
         # return code 0 even if no files are fetched
@@ -105,12 +124,19 @@ def statistics(project, package_name, target, arch)
   end
 end
 
-def compute_time(packages, project, target, arch)
+# @return [Integer,nil]
+def osc_total_build_time(project3, package_name)
+  xml = osc_statistics(project3, package_name)
+  return nil if xml.empty?
+  doc = REXML::Document.new(xml)
+  doc.root.elements["times/total/time"].text.to_i
+end
+
+def compute_time(packages, project3)
   packages.values.each do |pkg|
-    xml = statistics(project, pkg.name, target, arch)
-    next if xml.empty?
-    doc = REXML::Document.new(xml)
-    pkg.time = doc.root.elements["times/total/time"].text.to_i
+    time = osc_total_build_time(project3, pkg.name)
+    next if time.nil?
+    pkg.time = time
   end
 end
 
@@ -151,13 +177,14 @@ def print_yaml(output_file, packages)
   File.write(output_file, result_map.to_yaml)
 end
 
-project, target, arch, output_file = ARGV
+project3 = Project3.new
+project3.project, project3.target, project3.arch, output_file = ARGV
 
 raise "Usage: $0 <obs_project> <obs_build_target> <arch> <output_file>" unless output_file
 
-packages = get_packages(project, target, arch)
+packages = get_packages(project3)
 
 compute_layers(packages)
-compute_time(packages, project, target, arch)
+compute_time(packages, project3)
 compute_min_time(packages)
 print_yaml(output_file, packages)
