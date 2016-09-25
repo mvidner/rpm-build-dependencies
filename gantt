@@ -1,0 +1,64 @@
+#! /usr/bin/env ruby
+
+require "yaml"
+require "prawn"
+
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+require "obs"
+
+project3 = OBS::Project3.new(ARGV[0], ARGV[1], ARGV[2])
+deps = project3.dependson
+
+times = Hash[deps.keys.map {|p| [p, project3.total_build_time(p)]}]
+
+#puts times.to_yaml
+
+Prawn::Document.generate("gantt.pdf") do
+  stroke_rectangle [0, 0], 50, 10
+  fill_rectangle [0, 10], 250, 10
+end
+
+
+class Task
+  attr_accessor :name, :duration
+  attr_accessor :dep_task_names
+  attr_accessor :row, :start_time
+
+  def initialize(name:, dep_task_names:, duration:)
+    @name = name
+    @dep_task_names = dep_task_names
+    @duration = duration
+  end
+
+  def end_time
+    start_time + duration
+  end
+
+  def deps_empty?
+    dep_task_names.empty?
+  end
+end
+
+tasks = deps.map { |p, ps| [p ,Task.new(name: p,
+                                        dep_task_names: ps,
+                                        duration: times[p] || 0)] }
+tasks = Hash[tasks]
+
+$row = 0
+def schedule(task, time)
+  $row += 1
+  task.row = $row
+  task.start_time = time
+end
+
+loop do
+  todo_names = tasks.values.find_all(&:deps_empty?)
+  raise "Circular graph of size #{tasks.size}" if todo_names.empty?
+
+#  todo_names.each do |n|
+#    schedule(tasks[n], 0)
+#  end
+
+  todo_names.each do |n|
+  end
+end
