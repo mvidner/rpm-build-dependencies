@@ -56,7 +56,10 @@ need them and have been using https://github.com/openSUSE/packaging_rake_tasks
 
 ### Stub the APIs Used in Tests
 
+We run a mixture of unit and integration tests at RPM build time. The downside
+of this is that we pull in many of the run time dependencies. Fortunately
 Ruby is a dynamic language and makes it easy to replace interfaces by stubs.
+That enables us to cut those dependencies.
 
 Well, we also have some Perl code (notably yast2-users), and the stubbing
 techniques across languages are messier but still effective.
