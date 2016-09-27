@@ -5,41 +5,66 @@ from 42min 2s to 29min 40s.
 
 ## Where to Optimize
 
-1. know the dependencies
-2. know the individual build times
+This breaks down into
 
-1
+1. knowing the dependencies, and
+2. knowing the individual build times.
 
-(it is tempting to figure out the dependencies by yourself, by parsing the spec
-files.)
+### Dependencies
 
-use `osc dependson`
+It is tempting to figure out the dependencies by yourself, by parsing the spec
+files. But it is hard to do right, and, more importantly, a reinvention of the
+wheel. The Build Service must know all this to be able to schedule the builds,
+and provides a convenient way to access it, with `osc dependson`:
 
-2
+```console
+$ osc dependson YaST:Head openSUSE_Factory x86_64
+[...]
+yast2-x11 :
+   yast2-devtools
+yast2-xml :
+   yast2-core
+   yast2-devtools
+yast2-ycp-ui-bindings :
+   libyui
+   yast2-core
+   yast2-devtools
+```
 
-`osc getbinaries` produces the RPMs, and _statistics (also _buildenv and
-rpmlint.log)
+### Individual Build Times
 
-See the [Build Statistics](#build-statistics) section at the end.
+For each source package, the Build Service produces not only binary RPMs but
+also a `_statistics` file, available in the [web UI][webstats] or via
+`osc getbinaries`. We are interested in the total build time. (The data is of
+limited usability though, because packages can be built on machines with
+vastly different power and this information is not included.)
+
+For an example, see the [Build Statistics](#build-statistics) section
+at the end.
+
+[webstats]: https://build.opensuse.org/package/statistics/YaST:Head/yast2-core?arch=x86_64&repository=openSUSE_Factory
 
 ## How to Optimize
 
 ### Stop Using Autotools
 
-Automake, autoconf, and configure, take up (how much?), but we do not really
+Automake, autoconf, and configure, take up a majority of the time needed for
+building pure Ruby packages. They check for portablility problems that we
+don't have. They are a leftover from the times 15 years back
+when they were the only sensible option. Now we do not really
 need them and have been using https://github.com/openSUSE/packaging_rake_tasks
 
 ### Stub the APIs Used in Tests
 
-Ruby makes this easy
+Ruby is a dynamic language and makes it easy to replace interfaces by stubs.
 
-(unless the code is in Perl)
+Well, we also have some Perl code (notably yast2-users), and the stubbing
+techniques across languages are messier but still effective.
 
 ### Do not Build Specialized Documentation
 
 If the docs is only useful to people that will check out the git repo anyway
-then leave it out from the RPM
-
+then leave it out from the RPM.
 
 ## The Details
 
