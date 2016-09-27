@@ -52,7 +52,10 @@ Automake, autoconf, and configure, take up a majority of the time needed for
 building pure Ruby packages. They check for portablility problems that we
 don't have. They are a leftover from the times 15 years back
 when they were the only sensible option. Now we do not really
-need them and have been using https://github.com/openSUSE/packaging_rake_tasks
+need them and have been [switching][switch] to
+using <https://github.com/openSUSE/packaging_rake_tasks>.
+
+[switch]: https://github.com/yast/yast-bootloader/commit/5fb46ea8046ea9863e5411ffe1394797e71dde1e
 
 ### Stub the APIs Used in Tests
 
