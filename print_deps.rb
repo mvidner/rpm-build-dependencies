@@ -73,18 +73,82 @@ end
 
 def compute_layers(packages)
   dependencies = Hash[packages.values.map{ |p| [p.name, p.depends]}]
-  current_layer = 0
+  need_bootstraps = dependencies.map { |k, v| v.include?(k) ? k : nil }
+  need_bootstraps.compact!
+  current_layer = -1
+  next_pkg_for_layer = need_bootstraps
   while(!dependencies.empty?) do
-    pkgs_for_layer = dependencies.select{ |k,v| v.empty? }.keys
+    puts "remaining dependencies size #{dependencies.size}"
+
+    pkgs_for_layer = next_pkg_for_layer
+    next_pkg_for_layer = []
 
     pkgs_for_layer.each do |pkg|
       packages[pkg].layer = current_layer
+      dependencies.delete(pkg)
     end
 
-    dependencies.keep_if { |k, v| !pkgs_for_layer.include?(k) }
-    dependencies.each_pair { |k, v| dependencies[k] = v - pkgs_for_layer }
+    dependencies.each_pair do |k, v|
+      dependencies[k] = v - pkgs_for_layer
+      next_pkg_for_layer << k if dependencies[k].empty?
+    end
+
+    if next_pkg_for_layer.empty? && !dependencies.empty?
+      # find circular dependencies and pick anyone from it
+      next_pkg_for_layer = find_circular_dependencies(dependencies)
+      raise "no circular dependency found" if next_pkg_for_layer.empty?
+    end
 
     current_layer += 1
+  end
+end
+
+def find_circular_dependencies(dependencies)
+
+  # search in depth
+  indices = dependencies.each_with_object([]) do |pair, indices|
+    name, deps = pair
+    deps.each do |d|
+      indices << [name, d]
+    end
+  end
+
+  result = DirectedGraph.strongly_connected_components(indices)
+  result.select!{ |i| i.size > 1 }
+  puts "circular dependencies detected: #{result}"
+  # pick one package from each circular dependency
+  result.map(&:first)
+end
+
+# code from http://stackoverflow.com/questions/9728910/giving-an-example-of-a-cycle-in-a-directed-graph
+module DirectedGraph; module_function
+  ## Tarjan's algorithm
+  def strongly_connected_components graph
+    @index, @stack, @indice, @lowlink, @scc = 0, [], {}, {}, []
+    @graph = graph
+    @graph.flatten(1).uniq.each{|v| strong_connect(v) unless @indice[v]}
+    @scc
+  end
+
+  def strong_connect v
+    @indice[v] = @index
+    @lowlink[v] = @index
+    @index += 1
+    @stack.push(v)
+    @graph.each do |vv, w|
+      next unless vv == v
+      if !@indice[w]
+        strong_connect(w)
+        @lowlink[v] = [@lowlink[v], @lowlink[w]].min
+      elsif @stack.include?(w)
+        @lowlink[v] = [@lowlink[v], @indice[w]].min
+      end
+    end
+    if @lowlink[v] == @indice[v]
+      i = @stack.index(v)
+      @scc.push(@stack[i..-1])
+      @stack = @stack[0...i]
+    end
   end
 end
 
