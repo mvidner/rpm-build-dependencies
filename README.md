@@ -10,7 +10,7 @@ So far we have concentrated on solving the [problem][dabug] for
 one particular case, the [YaST project][yast]:
 
 ```console
-$ ruby print_deps.rb YaST:Head openSUSE_Factory x86_64 yast_deps.yaml
+$ ruby print_deps.rb YaST:Head openSUSE_Factory x86_64 .
 ```
 
 [obs]: http://openbuildservice.org/

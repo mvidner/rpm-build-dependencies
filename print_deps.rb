@@ -4,18 +4,9 @@ require "pp"
 require "rexml/document"
 require "fileutils"
 require "tmpdir"
+require_relative "package"
+require_relative "requires"
 
-class Package
-  attr_accessor :layer, :name, :depends, :time, :total_time
-
-  def initialize(name, depends)
-    @name = name
-    @layer = -1
-    @depends = depends
-    @time = -1
-    @total_time = 0
-  end
-end
 
 $cache_dir = nil
 def cache_dir
@@ -83,7 +74,6 @@ def compute_layers(packages)
 
     dependencies.keep_if { |k, v| !pkgs_for_layer.include?(k) }
     dependencies.each_pair { |k, v| dependencies[k] = v - pkgs_for_layer }
-
     current_layer += 1
   end
 end
@@ -154,17 +144,37 @@ def print_yaml(output_file, packages)
   end
 
   result_map["dependencies"] = Hash[packages.values.map { |p| ["#{p.name} ~ #{p.time}s", p.depends.map { |d| "#{d} [#{packages[d].layer}]" }]}]
+  result_map["sizes"] = {}
+  packages.each { |name, package| result_map["sizes"][name] = package.size }
 
   File.write(output_file, result_map.to_yaml)
 end
 
-project, target, arch, output_file = ARGV
+project, target, arch, output_dir = ARGV
 
-raise "Usage: $0 <obs_project> <obs_build_target> <arch> <output_file>" unless output_file
+raise "Usage: $0 <obs_project> <obs_build_target> <arch> <output_dir>" unless output_dir
+Requires.check_environment
 
-packages = get_packages(project, target, arch)
+# build requires
+build_packages = get_packages(project, target, arch)
+compute_layers(build_packages)
+compute_time(build_packages, project, target, arch)
+compute_min_time(build_packages)
+print_yaml(File.join(output_dir,"build_requires.yaml"), build_packages)
 
-compute_layers(packages)
-compute_time(packages, project, target, arch)
-compute_min_time(packages)
-print_yaml(output_file, packages)
+# installation requires
+repositories = { "openSUSE_Factory" => "obs://openSUSE:Factory/standard",
+  "openSUSE_42.1" => "obs://leap/42.1/repo/oss",
+  "openSUSE_Leap_42.2" => "obs://leap/42.1/repo/oss" }
+default_target = "obs://openSUSE:Factory/standard"
+
+unless repositories.key?(target)
+  puts "WARNING: Build target #{target}for evaluating the installation requirements not available."
+  puts "         Taking default #{default_target} target."
+end
+
+installation_packages = Requires.installation_requires(build_packages.keys,
+                          repositories[target] || default_target)
+compute_layers(installation_packages)
+print_yaml(File.join(output_dir,"installation_requires.yaml"), installation_packages)
+Requires.write_png(installation_packages, File.join(output_dir,"installation_requires.png"))
