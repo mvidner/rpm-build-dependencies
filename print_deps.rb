@@ -4,8 +4,8 @@ require "pp"
 require "rexml/document"
 require "fileutils"
 require "tmpdir"
-require "./package"
-require "./requires"
+require_relative "package"
+require_relative "requires"
 
 
 $cache_dir = nil
