@@ -166,9 +166,15 @@ print_yaml(File.join(output_dir,"build_requires.yaml"), build_packages)
 repositories = { "openSUSE_Factory" => "obs://openSUSE:Factory/standard",
   "openSUSE_42.1" => "obs://leap/42.1/repo/oss",
   "openSUSE_Leap_42.2" => "obs://leap/42.1/repo/oss" }
+default_target = "obs://openSUSE:Factory/standard"
+
+unless repositories.key?(target)
+  puts "WARNING: Build target #{target}for evaluating the installation requirements not available."
+  puts "         Taking default #{default_target} target."
+end
 
 installation_packages = Requires.installation_requires(build_packages.keys,
-                          repositories[target] || "obs://openSUSE:Factory/standard")
+                          repositories[target] || default_target)
 compute_layers(installation_packages)
 print_yaml(File.join(output_dir,"installation_requires.yaml"), installation_packages)
 Requires.write_png(installation_packages, File.join(output_dir,"installation_requires.png"))
