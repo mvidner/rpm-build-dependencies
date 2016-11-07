@@ -114,21 +114,30 @@ test package dependency tree
     requires = []
     File.open(File.join(dir,"config.xml"), "w") { |file| file.write(xml_doc) }
     begin
+
+      # requirements
       xml = Cheetah.run("sudo", "/usr/sbin/kiwi", "--info", dir, "--select",
               "packages", "--logfile", "/dev/null", :stdout => :capture)
       # remove first two lines which are not XML formated
       xml = xml.split("\n")[2..-1].join("\n")
       doc = REXML::Document.new(xml)
-
       doc.elements.each("*/package") { |package| requires << package.attributes["name"] }
       # remove zypper (due kiwi) and package_name
       requires.reject! { |req| ["zypper", package_name].include?(req) }
+
+      # size
+      xml = Cheetah.run("sudo", "/usr/sbin/kiwi", "--info", dir, "--select",
+              "size", "--logfile", "/dev/null", :stdout => :capture)
+      # remove first two lines which are not XML formated
+      xml = xml.split("\n")[2..-1].join("\n")
+      doc = REXML::Document.new(xml)
+      size = doc.root.elements["size"].attributes["rootsizeKB"].to_i
     rescue
       puts "Cannot evalutate dependencies of package: #{package_name}"
     end
     FileUtils.rm_rf dir
     
-    Package.new(package_name, requires)
+    Package.new(package_name, requires, size)
   end
 
   # Install a package using Zypper

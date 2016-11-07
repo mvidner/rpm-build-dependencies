@@ -18954,3 +18954,732 @@ dependencies:
   yast2-trans-zh_CN ~ -1s: []
   yast2-trans-zh_TW ~ -1s: []
   yast2-trans-zu ~ -1s: []
+sizes:
+  PackageKit: 267517890
+  SUSEConnect: 
+  autoyast2: 451814433
+  aytests-tests: 
+  kupdateapplet: 
+  libqt5-qtsvg-sle12: 
+  libqt5-qtx11extras-sle12: 
+  libstorage: 
+  libxkbcommon-sle12: 
+  libyui: 
+  libyui-bindings: 
+  libyui-doc: 157389104
+  libyui-ncurses: 
+  libyui-ncurses-doc: 133878429
+  libyui-ncurses-pkg: 
+  libyui-ncurses-pkg-doc: 121682813
+  libyui-qt: 
+  libyui-qt-doc: 155430963
+  libyui-qt-graph: 
+  libyui-qt-graph-doc: 113311480
+  libyui-qt-pkg: 
+  libyui-qt-pkg-doc: 133952680
+  libzypp: 112617886
+  perl-Bootloader: 113016670
+  rubygem-ast: 
+  rubygem-astrolabe: 
+  rubygem-aytests: 
+  rubygem-byebug: 
+  rubygem-cfa: 
+  rubygem-cfa_grub2: 
+  rubygem-childprocess: 
+  rubygem-coveralls: 
+  rubygem-docile: 
+  rubygem-docker-api: 148250390
+  rubygem-domain_name: 
+  rubygem-excon: 
+  rubygem-gettext: 
+  rubygem-http-cookie: 
+  rubygem-iniparse: 
+  rubygem-libyui-rake: 
+  rubygem-locale: 
+  rubygem-mime-types: 
+  rubygem-mime-types-1: 
+  rubygem-netrc: 
+  rubygem-overcommit: 
+  rubygem-packaging_rake_tasks: 
+  rubygem-parser: 
+  rubygem-powerpack: 
+  rubygem-rainbow: 
+  rubygem-raspell: 
+  rubygem-rest-client: 
+  rubygem-rspec: 
+  rubygem-rspec-core: 
+  rubygem-rspec-expectations: 
+  rubygem-rspec-mocks: 
+  rubygem-rubocop: 
+  rubygem-ruby-lint: 
+  rubygem-ruby-progressbar: 
+  rubygem-simplecov: 
+  rubygem-simplecov-html: 
+  rubygem-term-ansicolor: 
+  rubygem-text: 
+  rubygem-tins: 
+  rubygem-unf: 
+  rubygem-unf_ext: 
+  rubygem-unicode-display_width: 
+  rubygem-yast-rake: 
+  rubygem-yast-rake-ci: 
+  rubygem-yast-rake-ci-old: 
+  skelcd-control-SLES: 
+  skelcd-control-openSUSE: 
+  skelcd-control-openSUSE-LangAddOn: 
+  skelcd-control-openSUSE-promo: 507325529
+  sled-release-sp: 
+  sles-release-sp: 
+  snapper: 134087843
+  yast2: 429647069
+  yast2-add-on: 449369717
+  yast2-add-on-creator: 554219812
+  yast2-alternatives: 112654795
+  yast2-apparmor: 443072692
+  yast2-audit-laf: 429765012
+  yast2-auth-client: 430331903
+  yast2-auth-server: 455387756
+  yast2-boot-server: 
+  yast2-bootloader: 443417075
+  yast2-ca-management: 437228494
+  yast2-cluster: 456419734
+  yast2-control-center: 579331642
+  yast2-control-center-gnome: 579331642
+  yast2-core: 160213049
+  yast2-country: 432779081
+  yast2-crowbar: 
+  yast2-dbus-server: 282094567
+  yast2-devtools: 175539886
+  yast2-dhcp-server: 478574437
+  yast2-dns-server: 477703925
+  yast2-docker: 595405618
+  yast2-drbd: 431184708
+  yast2-fcoe-client: 434265023
+  yast2-firewall: 429906795
+  yast2-firstboot: 449399601
+  yast2-fonts: 434904134
+  yast2-ftp-server: 447100967
+  yast2-geo-cluster: 456383862
+  yast2-hardware-detection: 330971566
+  yast2-http-server: 444437807
+  yast2-inetd: 446820665
+  yast2-installation: 449231903
+  yast2-installation-control: 112716771
+  yast2-instserver: 429789622
+  yast2-iplb: 429759079
+  yast2-iscsi-client: 435026557
+  yast2-iscsi-lio-server: 456751338
+  yast2-isns: 429712581
+  yast2-journal: 429698459
+  yast2-kdump: 451764841
+  yast2-ldap: 444700782
+  yast2-mail: 446860109
+  yast2-metapackage-handler: 435564059
+  yast2-migration: 
+  yast2-multipath: 456520665
+  yast2-network: 444064895
+  yast2-nfs-client: 429816561
+  yast2-nfs-server: 429868001
+  yast2-nis-client: 444300075
+  yast2-nis-server: 444443989
+  yast2-ntp-client: 430040404
+  yast2-online-update: 432599368
+  yast2-online-update-configuration: 432568810
+  yast2-packager: 432487722
+  yast2-pam: 429706578
+  yast2-perl-bindings: 292668898
+  yast2-pkg-bindings: 162188637
+  yast2-pkg-bindings-devel-doc: 162198214
+  yast2-printer: 433357438
+  yast2-product-creator: 591665789
+  yast2-proxy: 429721981
+  yast2-python-bindings: 355866575
+  yast2-rear: 
+  yast2-registration: 
+  yast2-ruby-bindings: 327143519
+  yast2-samba-client: 431570656
+  yast2-samba-server: 448966961
+  yast2-scanner: 432705278
+  yast2-schema: 113616450
+  yast2-security: 429874191
+  yast2-services-manager: 429730745
+  yast2-slp: 429902722
+  yast2-slp-server: 429728031
+  yast2-snapper: 432300421
+  yast2-sound: 438033582
+  yast2-squid: 431130122
+  yast2-storage: 439690226
+  yast2-sudo: 446758522
+  yast2-support: 429760399
+  yast2-sysconfig: 429792028
+  yast2-testsuite: 170012499
+  yast2-tftp-server: 430711842
+  yast2-theme: 
+  yast2-theme-SLE: 
+  yast2-trans: 112617886
+  yast2-trans-allpacks: 199153559
+  yast2-trans-pot: 
+  yast2-trans-stats: 112618081
+  yast2-transfer: 327793263
+  yast2-tune: 443560448
+  yast2-update: 449231903
+  yast2-users: 446631839
+  yast2-vm: 429743570
+  yast2-vpn: 429773013
+  yast2-wagon: 
+  yast2-x11: 228734699
+  yast2-xml: 160335655
+  yast2-ycp-ui-bindings: 292287642
+  PackageKit-backend-zypp: 0
+  PackageKit-branding-openSUSE: 0
+  aaa_base: 0
+  acl: 0
+  bash: 0
+  binutils: 0
+  blog: 0
+  bzip2: 0
+  coreutils: 0
+  cpio: 0
+  cracklib: 0
+  cracklib-dict-full: 0
+  dbus-1: 0
+  dbus-1-x11: 0
+  diffutils: 0
+  dracut: 0
+  elfutils: 0
+  file: 0
+  file-magic: 0
+  filesystem: 0
+  fillup: 0
+  findutils: 0
+  gawk: 0
+  gio-branding-openSUSE: 0
+  glib2-tools: 0
+  glibc: 0
+  gpg2: 0
+  grep: 0
+  gzip: 0
+  hardlink: 0
+  info: 0
+  insserv-compat: 0
+  kbd: 0
+  kbd-legacy: 0
+  kmod: 0
+  kmod-compat: 0
+  krb5: 0
+  libX11-6: 0
+  libX11-data: 0
+  libXau6: 0
+  libacl1: 0
+  libadns1: 0
+  libapparmor1: 0
+  libasm1: 0
+  libassuan0: 0
+  libattr1: 0
+  libaudit1: 0
+  libaugeas0: 0
+  libblkid1: 0
+  libbz2-1: 0
+  libcap-ng0: 0
+  libcap2: 0
+  libcom_err2: 0
+  libcrack2: 0
+  libcryptsetup4: 0
+  libcurl4: 0
+  libdb-4_8: 0
+  libdbus-1-3: 0
+  libdevmapper1_03: 0
+  libdw1: 0
+  libelf1: 0
+  libexpat1: 0
+  libfdisk1: 0
+  libffi4: 0
+  libgcc_s1: 0
+  libgcrypt20: 0
+  libgio-2_0-0: 0
+  libglib-2_0-0: 0
+  libgmodule-2_0-0: 0
+  libgmp10: 0
+  libgnutls30: 0
+  libgobject-2_0-0: 0
+  libgpg-error0: 0
+  libhogweed4: 0
+  libicu57_1: 0
+  libicu57_1-ledata: 0
+  libidn11: 0
+  libkeyutils1: 0
+  libkmod2: 0
+  libksba8: 0
+  libldap-2_4-2: 0
+  liblua5_3: 0
+  liblzma5: 0
+  libmagic1: 0
+  libmicrohttpd12: 0
+  libmodman1: 0
+  libmount1: 0
+  libmozjs-17_0: 0
+  libncurses6: 0
+  libnettle6: 0
+  libnghttp2-14: 0
+  libnpth0: 0
+  libnsl2: 0
+  libopenssl1_0_0: 0
+  libp11-kit0: 0
+  libpackagekit-glib2-18: 0
+  libpcre1: 0
+  libpolkit0: 0
+  libpopt0: 0
+  libprocps6: 0
+  libproxy1: 0
+  libpsl5: 0
+  libpython2_7-1_0: 0
+  libqrencode3: 0
+  libreadline7: 0
+  libsasl2-3: 0
+  libseccomp2: 0
+  libselinux1: 0
+  libsemanage1: 0
+  libsepol1: 0
+  libsgutils2-1_43-2: 0
+  libsmartcols1: 0
+  libsolv-tools: 0
+  libsqlite3-0: 0
+  libssh2-1: 0
+  libstdc++6: 0
+  libsystemd0: 0
+  libtasn1: 0
+  libtasn1-6: 0
+  libtirpc-netconfig: 0
+  libtirpc3: 0
+  libudev1: 0
+  libusb-1_0-0: 0
+  libustr-1_0-1: 0
+  libutempter0: 0
+  libuuid1: 0
+  libverto1: 0
+  libxcb1: 0
+  libxml2-2: 0
+  libz1: 0
+  libzio1: 0
+  mozilla-nspr: 0
+  ncurses-utils: 0
+  netcfg: 0
+  openSUSE-release: 0
+  openSUSE-release-ftp: 0
+  pam: 0
+  pam-config: 0
+  perl-base: 0
+  permissions: 0
+  pigz: 0
+  pinentry: 0
+  pkg-config: 0
+  polkit: 0
+  procps: 0
+  product:openSUSE: 0
+  python: 0
+  python-base: 0
+  rpm: 0
+  sed: 0
+  sg3_utils: 0
+  shadow: 0
+  shared-mime-info: 0
+  suse-module-tools: 0
+  systemd: 0
+  systemd-presets-branding-openSUSE: 0
+  systemd-sysvinit: 0
+  sysvinit-tools: 0
+  terminfo-base: 0
+  timezone: 0
+  udev: 0
+  update-alternatives: 0
+  util-linux: 0
+  xz: 0
+  augeas: 0
+  augeas-lenses: 0
+  autoyast2-installation: 0
+  curl: 0
+  device-mapper: 0
+  fdupes: 0
+  glibc-locale: 0
+  hwinfo: 0
+  idnkit: 0
+  initviocons: 0
+  libaio1: 0
+  libdevmapper-event1_03: 0
+  libgdbm4: 0
+  libidnkit1: 0
+  libmetalink3: 0
+  libnl-config: 0
+  libnl3-200: 0
+  libparted0: 0
+  libpci3: 0
+  libruby2_2-2_2: 0
+  libstorage-ruby: 0
+  libstorage7: 0
+  libwicked-0-6: 0
+  libx86emu1: 0
+  libxslt-tools: 0
+  libxslt1: 0
+  libyaml-0-2: 0
+  libyui-ncurses-pkg7: 0
+  libyui-ncurses7: 0
+  libyui7: 0
+  lsscsi: 0
+  openslp: 0
+  parted: 0
+  pciutils: 0
+  pciutils-ids: 0
+  perl: 0
+  perl-Config-Crontab: 0
+  perl-XML-NamespaceSupport: 0
+  perl-XML-Parser: 0
+  perl-XML-SAX: 0
+  perl-XML-SAX-Base: 0
+  perl-XML-SAX-Expat: 0
+  perl-XML-Simple: 0
+  perl-gettext: 0
+  ruby: 0
+  ruby-common: 0
+  ruby2.2: 0
+  ruby2.2-rubygem-abstract_method: 0
+  ruby2.2-rubygem-cfa: 0
+  ruby2.2-rubygem-cfa_grub2: 0
+  ruby2.2-rubygem-cheetah: 0
+  ruby2.2-rubygem-fast_gettext: 0
+  ruby2.2-rubygem-gem2rpm: 0
+  ruby2.2-rubygem-ruby-augeas: 0
+  ruby2.2-rubygem-ruby-dbus: 0
+  ruby2.2-stdlib: 0
+  sysconfig: 0
+  sysconfig-netconfig: 0
+  tar: 0
+  thin-provisioning-tools: 0
+  unzip: 0
+  util-linux-systemd: 0
+  wicked: 0
+  wicked-service: 0
+  yast2-country-data: 0
+  ruby2.2-rubygem-archive-tar-minitar: 0
+  ruby2.2-rubygem-excon: 0
+  fcoe-utils: 0
+  hicolor-icon-theme: 0
+  iproute2: 0
+  iscsiuio: 0
+  kdump: 0
+  kexec-tools: 0
+  libICE6: 0
+  libSM6: 0
+  libXext6: 0
+  libXmu6: 0
+  libXt6: 0
+  libconfig9: 0
+  libedit0: 0
+  libesmtp: 0
+  libldapcpp1: 0
+  liblldp_clif1: 0
+  liblzo2-2: 0
+  libmnl0: 0
+  libpciaccess0: 0
+  libsnappy1: 0
+  libxtables11: 0
+  logrotate: 0
+  makedumpfile: 0
+  open-iscsi: 0
+  open-lldp: 0
+  openssh: 0
+  perl-Digest-SHA1: 0
+  perl-Parse-RecDescent: 0
+  perl-X500-DN: 0
+  ruby2.2-rubygem-byebug: 0
+  xbitmaps: 0
+  yast2-branding-openSUSE: 0
+  yast2-nfs-common: 0
+  yast2-qt-branding-openSUSE: 0
+  boost-license1_62_0: 0
+  libboost_system1_62_0: 0
+  libboost_thread1_62_0: 0
+  libbtrfs0: 0
+  libsnapper3: 0
+  cpp: 0
+  cpp6: 0
+  gcc: 0
+  gcc6: 0
+  gettext-runtime: 0
+  gettext-tools: 0
+  glibc-devel: 0
+  hostname: 0
+  libasan3: 0
+  libatomic1: 0
+  libcilkrts5: 0
+  libcroco-0_6-3: 0
+  libgomp1: 0
+  libisl15: 0
+  libitm1: 0
+  liblsan0: 0
+  libmpc3: 0
+  libmpfr4: 0
+  libmpx2: 0
+  libmpxwrappers2: 0
+  libtsan0: 0
+  libubsan0: 0
+  linux-glibc-devel: 0
+  make: 0
+  net-tools: 0
+  patch: 0
+  rpm-build: 0
+  systemd-rpm-macros: 0
+  which: 0
+  perl-DBD-SQLite: 0
+  perl-DBI: 0
+  perl-Encode-Locale: 0
+  perl-File-Listing: 0
+  perl-HTML-Parser: 0
+  perl-HTML-Tagset: 0
+  perl-HTTP-Cookies: 0
+  perl-HTTP-Daemon: 0
+  perl-HTTP-Date: 0
+  perl-HTTP-Message: 0
+  perl-HTTP-Negotiate: 0
+  perl-IO-HTML: 0
+  perl-LWP-MediaTypes: 0
+  perl-Net-HTTP: 0
+  perl-RPC-XML: 0
+  perl-Term-ReadKey: 0
+  perl-TimeDate: 0
+  perl-URI: 0
+  perl-WWW-RobotRules: 0
+  perl-apparmor: 0
+  perl-libwww-perl: 0
+  libcamgm100: 0
+  perl-Bit-Vector: 0
+  perl-Carp-Clan: 0
+  perl-Config-IniFiles: 0
+  perl-Date-Calc: 0
+  perl-IO-stringy: 0
+  perl-Sub-Uplevel: 0
+  perl-Test-Exception: 0
+  perl-camgm: 0
+  Mesa: 0
+  Mesa-libEGL1: 0
+  Mesa-libGL1: 0
+  Mesa-libglapi0: 0
+  adwaita-icon-theme: 0
+  at-spi2-core: 0
+  cups-libs: 0
+  fontconfig: 0
+  gdk-pixbuf-query-loaders: 0
+  glib-networking: 0
+  gnome-menus: 0
+  gnome-menus-branding-openSUSE: 0
+  gsettings-desktop-schemas: 0
+  gtk3-data: 0
+  gtk3-tools: 0
+  libLLVM3_8: 0
+  libX11-xcb1: 0
+  libXcomposite1: 0
+  libXcursor1: 0
+  libXdamage1: 0
+  libXfixes3: 0
+  libXft2: 0
+  libXi6: 0
+  libXinerama1: 0
+  libXrandr2: 0
+  libXrender1: 0
+  libXtst6: 0
+  libXxf86vm1: 0
+  libatk-1_0-0: 0
+  libatk-bridge-2_0-0: 0
+  libatspi0: 0
+  libavahi-client3: 0
+  libavahi-common3: 0
+  libcairo-gobject2: 0
+  libcairo2: 0
+  libcolord2: 0
+  libdatrie1: 0
+  libdrm2: 0
+  libdrm_amdgpu1: 0
+  libdrm_intel1: 0
+  libdrm_nouveau2: 0
+  libdrm_radeon1: 0
+  libepoxy0: 0
+  libfreetype6: 0
+  libgbm1: 0
+  libgdk_pixbuf-2_0-0: 0
+  libgnome-menu-3-0: 0
+  libgraphite2-3: 0
+  libgtk-3-0: 0
+  libharfbuzz0: 0
+  libjasper1: 0
+  libjbig2: 0
+  libjpeg8: 0
+  libjson-glib-1_0-0: 0
+  liblcms2-2: 0
+  libpango-1_0-0: 0
+  libpixman-1-0: 0
+  libpng16-16: 0
+  librest0: 0
+  libsoup-2_4-1: 0
+  libthai-data: 0
+  libthai0: 0
+  libtiff5: 0
+  libwayland-client0: 0
+  libwayland-cursor0: 0
+  libwayland-egl1: 0
+  libwayland-server0: 0
+  libxcb-dri2-0: 0
+  libxcb-dri3-0: 0
+  libxcb-glx0: 0
+  libxcb-present0: 0
+  libxcb-render0: 0
+  libxcb-shm0: 0
+  libxcb-sync1: 0
+  libxcb-xfixes0: 0
+  libxkbcommon0: 0
+  libxshmfence1: 0
+  xkeyboard-config: 0
+  autoconf: 0
+  automake: 0
+  m4: 0
+  perl-XML-Writer: 0
+  yast2-buildtools: 0
+  bind-utils: 0
+  libbind9-140: 0
+  libdns162: 0
+  libirs141: 0
+  libisc160: 0
+  libisccc140: 0
+  libisccfg140: 0
+  liblwres141: 0
+  apparmor-parser: 0
+  bridge-utils: 0
+  ca-certificates: 0
+  ca-certificates-mozilla: 0
+  containerd: 0
+  docker: 0
+  e2fsprogs: 0
+  git-core: 0
+  iptables: 0
+  less: 0
+  libext2fs2: 0
+  libiptc0: 0
+  liblvm2app2_2: 0
+  liblvm2cmd2_02: 0
+  libnetfilter_conntrack3: 0
+  libnfnetlink0: 0
+  lvm2: 0
+  openssl: 0
+  p11-kit: 0
+  p11-kit-tools: 0
+  perl-Error: 0
+  rsync: 0
+  runc: 0
+  xtables-plugins: 0
+  drbd: 0
+  drbd-utils: 0
+  fonts-config: 0
+  libfont-specimen0: 0
+  lio-utils: 0
+  expat: 0
+  perl-CPAN-Changes: 0
+  perl-Devel-Symdump: 0
+  perl-Net-DBus: 0
+  perl-Pod-Coverage: 0
+  perl-Test-Pod: 0
+  perl-Test-Pod-Coverage: 0
+  perl-X11-Protocol: 0
+  perl-XML-Twig: 0
+  perl-XML-XPath: 0
+  xdg-utils: 0
+  checkmedia: 0
+  gptfdisk: 0
+  kiwi: 0
+  kiwi-tools: 0
+  perl-Class-Singleton: 0
+  perl-File-Slurp: 0
+  perl-JSON: 0
+  perl-Readonly: 0
+  perl-XML-LibXML: 0
+  perl-solv: 0
+  psmisc: 0
+  qemu-tools: 0
+  screen: 0
+  libpython3_5m1_0: 0
+  python3: 0
+  python3-base: 0
+  perl-Crypt-SmbHash: 0
+  perl-Digest-MD4: 0
+  alsa: 0
+  alsa-utils: 0
+  dialog: 0
+  libasound2: 0
+  libdialog13: 0
+  libsamplerate0: 0
+  libboost_regex1_62_0: 0
+  dejagnu: 0
+  expect: 0
+  tcl: 0
+  lsof: 0
+  yast2-trans-af: 0
+  yast2-trans-ar: 0
+  yast2-trans-ast: 0
+  yast2-trans-bg: 0
+  yast2-trans-bn: 0
+  yast2-trans-bs: 0
+  yast2-trans-ca: 0
+  yast2-trans-cs: 0
+  yast2-trans-cy: 0
+  yast2-trans-da: 0
+  yast2-trans-de: 0
+  yast2-trans-el: 0
+  yast2-trans-en_GB: 0
+  yast2-trans-en_US: 0
+  yast2-trans-es: 0
+  yast2-trans-et: 0
+  yast2-trans-fa: 0
+  yast2-trans-fi: 0
+  yast2-trans-fr: 0
+  yast2-trans-gl: 0
+  yast2-trans-gu: 0
+  yast2-trans-hi: 0
+  yast2-trans-hr: 0
+  yast2-trans-hu: 0
+  yast2-trans-id: 0
+  yast2-trans-it: 0
+  yast2-trans-ja: 0
+  yast2-trans-jv: 0
+  yast2-trans-ka: 0
+  yast2-trans-km: 0
+  yast2-trans-kn: 0
+  yast2-trans-ko: 0
+  yast2-trans-ku: 0
+  yast2-trans-lo: 0
+  yast2-trans-lt: 0
+  yast2-trans-mk: 0
+  yast2-trans-mr: 0
+  yast2-trans-nb: 0
+  yast2-trans-nds: 0
+  yast2-trans-nl: 0
+  yast2-trans-nn: 0
+  yast2-trans-pa: 0
+  yast2-trans-pl: 0
+  yast2-trans-pt: 0
+  yast2-trans-pt_BR: 0
+  yast2-trans-ro: 0
+  yast2-trans-ru: 0
+  yast2-trans-si: 0
+  yast2-trans-sk: 0
+  yast2-trans-sl: 0
+  yast2-trans-sr: 0
+  yast2-trans-sv: 0
+  yast2-trans-sw: 0
+  yast2-trans-ta: 0
+  yast2-trans-tg: 0
+  yast2-trans-th: 0
+  yast2-trans-tr: 0
+  yast2-trans-uk: 0
+  yast2-trans-vi: 0
+  yast2-trans-wa: 0
+  yast2-trans-xh: 0
+  yast2-trans-zh_CN: 0
+  yast2-trans-zh_TW: 0
+  yast2-trans-zu: 0

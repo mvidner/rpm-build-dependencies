@@ -144,6 +144,8 @@ def print_yaml(output_file, packages)
   end
 
   result_map["dependencies"] = Hash[packages.values.map { |p| ["#{p.name} ~ #{p.time}s", p.depends.map { |d| "#{d} [#{packages[d].layer}]" }]}]
+  result_map["sizes"] = {}
+  packages.each { |name, package| result_map["sizes"][name] = package.size }
 
   File.write(output_file, result_map.to_yaml)
 end
